@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+		<title>Fetch and AJAX Examples</title>
+
+		<!-- Stylesheets -->
+		<!-- <link rel="stylesheet" href="css/styles.css"> -->
+	</head>
+	<body>
+
+    <h1>Fetch and AJAX Examples</h1>
+
+		<h2>Data:</h2>
+    <div id="data"></div>
+    
+		<!-- Scripts -->
+		<script src="js/scripts.js"></script>
+		<script>
+			// Works
+			// console.log('test');
+			
+			// Also works
+			// window.onload = () => {
+			// 	console.log('on load');
+			// };
+
+			// This also works.  fn would be the code in your script file you want to run
+			// fn = () => console.log('Document loaded');
+			
+			ready = fn => {
+				if ( document.attachEvent ? document.readyState === 'complete' : document.readyState !== 'loading' ) {
+					fn();
+				} else {
+					document.addEventListener('DOMContentLoaded', fn);
+				}
+			}
+
+			// You must call the ready function for it to run.
+			ready(getHttpReq);
+
+			// jQuery
+			// $(document).ready(function() {
+  		// 	console.log('in scripts');
+			// });
+		</script>
+	</body>
+</html>
