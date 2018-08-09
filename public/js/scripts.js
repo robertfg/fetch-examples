@@ -1,4 +1,6 @@
-// Request Listener (remember: no arrow functions with this)
+/*  **********  XMLHttpRequest  **********  */
+
+// Request Listener (remember: no arrow functions when you use "this")
 function reqListener() {
   let data = JSON.parse(this.responseText);
   let dataItems = data.map(data => `<p><strong>${data.firstName} ${data.lastName}</strong>: ${data.email}</p>`);
@@ -9,39 +11,89 @@ function reqListener() {
   document.getElementById('data').innerHTML = html;
 }
 
-// Doesn't work
-// function reqListener2(xhr) {
-//   let data = JSON.parse(this.responseText);
-//   let dataItems = data.map(data => `<p><strong>${data.firstName} ${data.lastName}</strong>: ${data.email}</p>`);
-
-//   // This line is necessary to avoid having the data lines separated by a comma
-//   const html = `${dataItems.join('')}`;
-
-//   document.getElementById('data').innerHTML = html;
-// if ( xhr.readyState === 4 ) {
-//   }
+// Error Handler
+reqError = err => console.error('XMLHttpRequest error: ', err);
+// function reqError(err) {
+//   console.error('XMLHttpRequest error: ', err);
 // }
 
-// Error Handler
-reqError = err => console.log('Fetch Error: ', err);
+// Use with onreadystatechange
+function reqStateChange() {
+  if ( this.readyState === 4 ) {
+    if ( this.status === 200 ) {
+      let data = JSON.parse(this.responseText);
+      let dataItems = data.map(data => `<p><strong>${data.firstName} ${data.lastName}</strong>: ${data.email}</p>`);
+      const html = `${dataItems.join('')}`;
+      document.getElementById('data').innerHTML = html;
+    } else {
+      let err = JSON.parse(this.responseText);
+      console.error('Error: ' + err.error.status + ' - ' + err.message + '!');
+    }
+  }
+}
 
-
-/*  **********  XMLHttpRequest  **********  */
 getHttpReq = () => {
-  // 1. Create an XML HTTP Request object
   let xhr = new XMLHttpRequest();
 
-  // 2.	Create a callback function: programming you want to run while server returns its response.
-  xhr.onload = reqListener;
-  // xhr.onreadystatechange = reqListener2(xhr);
-  xhr.onerror = reqError;
+  // onerror doesn't work, so stick with onreadystatechange
+  // xhr.onload = reqListener;
+  // xhr.onerror = reqError;
 
-  // 3.	Open a Request:
+  xhr.onreadystatechange = reqStateChange;
   xhr.open('GET', '/api/data', true);
-
-  // 4.	Send the request
   xhr.send();
 }
 
 
 /*  **********  FETCH  **********  */
+
+renderData = data => {
+  let dataItems = data.map(data => `<p><strong>${data.firstName} ${data.lastName}</strong>: ${data.email}</p>`);
+  const html = `${dataItems.join('')}`;
+  document.getElementById('data').innerHTML = html;
+};
+
+// ***** Read
+getData = () => {
+  fetch('/api/data')
+  .then(response => response.json())
+  .then(data => renderData(data))
+  .catch(err => console.error("Can't get the data with fetch: ", err));
+};
+
+// ***** Create
+addData = () => {
+  let userData = {
+    firstName: "Kevin",
+    lastName:  "Glover",
+    email:     "kevybarb@warglo.com"
+    }
+
+  fetch('/api/data', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(userData)
+  })
+  .then(response => response.json())
+  .catch(err => console.error("Can't add the data with fetch: ", err));
+};
+
+// ***** Update
+editData = () => {
+  fetch('/api/data', {
+    method: 'PUT',
+    headers:  { 'Content-Type': 'application/json' }
+  })
+  .then(response => response.json())
+  .catch(err => console.error("Can't edit the data with fetch: ", err));
+};
+
+// ***** Delete
+delData = () => {
+  fetch('/api/data', {
+    method: 'DELETE',
+    headers:  { 'Content-Type': 'application/json' }
+  })
+  .then(response => response.json())
+  .catch(err => console.error("Can't delete the data with fetch: ", err));
+};

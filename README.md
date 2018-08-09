@@ -20,6 +20,8 @@ Date:     2018-07-30
     - main: src/server.js
     - start: node src/server.js
 8.  Run with npm start (nodemon)
+9.  Eventually, in order to "stringify" data, I need to install bodyParser:
+    - npm install body-parser
 
 ### Note that there is no need to install Node or Express as they have been installed globally.
 ### Although, if I were going to distribute the App, I would need to install Express locally.

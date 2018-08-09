@@ -16,7 +16,13 @@
 
 		<h2>Data:</h2>
     <div id="data"></div>
-    
+		
+		<form>
+			<button onclick="addData()">Add Data</button>
+			<button onclick="editData()">Edit Data</button>
+			<button onclick="delData()">Delete Data</button>
+		</form>
+
 		<!-- Scripts -->
 		<script src="js/scripts.js"></script>
 		<script>
@@ -41,6 +47,7 @@
 
 			// You must call the ready function for it to run.
 			ready(getHttpReq);
+			// ready(getData);
 
 			// jQuery
 			// $(document).ready(function() {
